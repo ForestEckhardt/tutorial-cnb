@@ -14,9 +14,10 @@ You will need the following tools installed on your machine to aid you in buildi
 - [Jam](https://github.com/cloudfoundry/packit/releases) (Jam is optional, but highly recommended)
 
 ## Let's Get Started
-For demonstration purposes we are going to build a buildpack that installs a the `nodejs` engine, which is based off the Paketo [node-engine-cnb](https://github.com/cloudfoundry/node-engine-cnb).
-
-# TODO PUT GO PROJECT INIT INSTRUCTIONS
+For demonstration purposes we are going to build a buildpack that installs a the `nodejs` engine, which is based off the Paketo [node-engine-cnb](https://github.com/cloudfoundry/node-engine-cnb). To start a brand new Go project all you need to do is create a new directory to contain you project run the following command:
+```shell
+go mod init <path/to/project or github.com/<some-org or some-user>/<some-repo>>
+```
 
 ### `buildpack.toml`
 ``` toml
@@ -55,21 +56,21 @@ api = "0.2"
  For a complete rundown on how the Detect Phase works you can read the `Detect Phase` section in the [packit godocs](https://godoc.org/github.com/cloudfoundry/packit), but for now I will give you a quick run down. In the Packit library, there is a [`packit.Detect()`](https://godoc.org/github.com/cloudfoundry/packit#Detect) function that consumes a [`packit.DetectFunc`](https://godoc.org/github.com/cloudfoundry/packit#DetectFunc). The `packit.DetectFunc` is created by us (the buildpack author) and contains all of the buildpack specific detection logic. So with that let's laydown some code and talk about it.
  
  `cmd/detect/main.go`
- ```go
+```go
 package main
 
 import (
-    "github.com/<github org/user>/<github repo>/node"
+    "<path/to/project or github.com/<some-org or some-user>/<some-repo>>/node"
 	"github.com/cloudfoundry/packit"
 )
 
 func main() {
 	packit.Detect(node.Detect())
 }
- ```
+```
  
- `node/detect.go`
- ```go
+`node/detect.go`
+```go
 package node
 
 import (
@@ -84,6 +85,7 @@ func Detect() packit.DetectFunc {
 	}
 }
 ```
+
 Alright let's talk about this for a minute. With these pieces of code, we have written a buildpack that will alway detect false. The reason that we have split out definition for the `packit.DetectFunc` in to its own package is that we make a clear separation in terms of what Packit needs to function and what the business logic for our buildpack, all buildpack specific business logic will go into the `node` package from now on. This may seem small but if you plan on potentially expanding this buildpack we highly recommend that you follow this structure.
 
 To test out progress so far we can build the detect binary ourselves with the following command:
@@ -161,7 +163,7 @@ For a complete on how the Build Phase works you can read the `Build Phase` secti
 package main
 
 import (
-	"github.com/<github org/user>/<github repo>/node"
+	"<path/to/project or github.com/<some-org or some-user>/<some-repo>>/node"
 	"github.com/cloudfoundry/packit"
 )
 
@@ -425,8 +427,6 @@ You can then verify that this is running by either running:
 curl localhost
 ```
 or visiting `localhost:8080` in your web browser. Either way you should expect to see "hello world" as your output.
-
-# ADD START COMMAND
 
 
 
