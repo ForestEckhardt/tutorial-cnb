@@ -1,0 +1,13 @@
+api = "0.2"
+
+[buildpack]
+  id = "com.example.node-engine"
+  name = "Node Engine Buildpack"
+  version = "0.0.1"
+
+[[stacks]]
+  id = "org.cloudfoundry.stacks.cflinuxfs3"
+
+[metadata]
+  [[metadata.dependencies]]
+    uri = "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz"
