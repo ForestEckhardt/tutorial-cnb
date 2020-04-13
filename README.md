@@ -1,9 +1,10 @@
-# The Quick and Dirty Way to Write a Cloud Native Buildpack Using Packit
+# How to Write a Cloud Native Buildpack Using Packit
 
 If the entire Cloud Native Buildpack experience is new to you, you may want to stop and take some time to read the about [authoring a a Cloud Native Buildpack](https://buildpacks.io/docs/buildpack-author-guide/create-buildpack/) (CNB). Packit is a Go library that is an abstraction that conforms to the [CNB specification](https://github.com/buildpacks/spec) that takes a minimal approach in terms of the features that are implemented giving a lot of fine control to the buildpack author. But, that isn't what this tutorial is about, this tutorial's goal is to take you from nothing to a buildpack that puts a dependency on the filesystem as fast as possible, so with that let's get into it.
 
 ## Packit
 [![GoDoc](https://godoc.org/github.com/cloudfoudry/packit?status.svg)](https://godoc.org/github.com/cloudfoundry/packit)
+
 For the full documentation of the Packit library, you can peruse the godocs linked above, but in the interest of saving you time let's talk about the three artifacts that will need to be present in our final built buildpack. In the end we will need a `buildpack.toml` file, a `bin/detect` binary, and a `bin/build` binary for this buildpack to be CNB compliant so with that let's get started.
 
 ## Prerequisites
@@ -11,10 +12,11 @@ You will need the following tools installed on your machine to aid you in buildi
 - [Docker](https://docs.docker.com/install/)
 - [Pack](https://buildpacks.io/docs/install-pack/)
 - [Go](https://golang.org/doc/install)
-- [Jam](https://github.com/cloudfoundry/packit/releases) (Jam is optional, but highly recommended)
 
 ## Let's Get Started
-For demonstration purposes we are going to build a buildpack that installs a the `nodejs` engine, which is based off the Paketo [node-engine-cnb](https://github.com/cloudfoundry/node-engine-cnb). To start a brand new Go project all you need to do is create a new directory to contain you project run the following command:
+For demonstration purposes we are going to build a buildpack that installs a the `nodejs` engine, which is based off the Paketo [node-engine-cnb](https://github.com/cloudfoundry/node-engine-cnb). 
+
+A sample repository containing all of the code is [here](https://github.com/ForestEckhardt/tutorial-cnb). To start a brand new Go project all you need to do is create a new directory to contain you project run the following command:
 ```shell
 go mod init <path/to/project or github.com/<some-org or some-user>/<some-repo>>
 ```
